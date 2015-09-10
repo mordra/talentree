@@ -17,10 +17,6 @@ TopNav = React.createClass({
         };
     },
     render() {
-        var loginLogout = this.data.currentUser ?
-            <a href="/">Logout</a> :
-            <LoginButton />;
-
         return (
             <div className="ui top attached menu">
                 <a href="/" className="item">
@@ -34,7 +30,7 @@ TopNav = React.createClass({
                     <a href="/project/new" className="item">
                         <div className="h2">New Project</div>
                     </a>
-                    {loginLogout}
+                    <LoginButton />
                 </div>
             </div>
         )
