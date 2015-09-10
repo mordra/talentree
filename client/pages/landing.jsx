@@ -11,7 +11,6 @@ Landing = React.createClass({
                 <h1>
                     Welcome to Talentree!
                 </h1>
-                <Login/>
             </div>
         );
     }
