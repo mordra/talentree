@@ -9,9 +9,14 @@ accounts-password
 accounts-facebook
 accounts-google
 accounts-twitter
+meteortoys:allthings@1.2.3
 iandouglas:accounts-ui-semantic-ui
 kadira:flow-router
 kadira:react-layout
 react
 semantic:ui
 flemay:less-autoprefixer
+meteorhacks:npm
+cosmos:browserify
+
+npm-container

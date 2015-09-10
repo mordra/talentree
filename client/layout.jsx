@@ -26,9 +26,11 @@ TopNav = React.createClass({
                     </h1>
                 </a>
 
-                <div className="right menu">
+                <div className="labeled icon right menu">
+
                     <a href="/project/new" className="item">
-                        <div className="h2">New Project</div>
+                        <i className="ui icon large red lightning"></i>
+                            New Project
                     </a>
                     <LoginButton />
                 </div>
