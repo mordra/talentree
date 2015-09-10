@@ -19,7 +19,7 @@ TopNav = React.createClass({
     render() {
         var loginLogout = this.data.currentUser ?
             <a href="/">Logout</a> :
-            <Login />;
+            <LoginButton />;
 
         return (
             <div className="ui top attached menu">

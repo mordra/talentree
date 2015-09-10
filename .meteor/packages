@@ -6,6 +6,9 @@
 
 meteor-platform
 accounts-password
+accounts-facebook
+accounts-google
+accounts-twitter
 iandouglas:accounts-ui-semantic-ui
 kadira:flow-router
 kadira:react-layout
