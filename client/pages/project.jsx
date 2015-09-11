@@ -8,11 +8,13 @@ FlowRouter.route('/project/:pid?', {
 Project = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
+        //var now = moment().format();
+        //console.log("Now: " + now);
         return {
             name: '',
             newVideo: '',
-            submissionDate:'',
-            videos: []
+            submissionDate:moment(),
+            media: []
         }
     },
     changeSubmissionDate (date) {
@@ -21,12 +23,9 @@ Project = React.createClass({
     propTypes: {
         pid: React.PropTypes.string.isRequired
     },
-    componentDidMount() {
-
-    },
     addVideo() {
         console.log('Adding video: ' + this.state.newVideo);
-        this.state.videos.push(this.state.newVideo);
+        this.state.media.push(this.state.newVideo);
         this.setState({newVideo: ''});
     },
     renderVideo(video, key) {
@@ -41,7 +40,11 @@ Project = React.createClass({
         }
     },
     submitProject() {
-        Meteor.call('SubmitProject');
+        var project = _.extend({}, this.state);
+        project.submissionDate = project.submissionDate.format();
+        Meteor.call('SubmitProject', project, function () {
+            FlowRouter.go('/');
+        });
     },
     render() {
         return (
@@ -54,7 +57,7 @@ Project = React.createClass({
                         <label>Description</label>
                         <textarea name="" id="" rows="5"></textarea>
                     </div>
-                    <DatePicker dateFormat="DD/MM" onChange={this.changeSubmissionDate} selected={this.state.submissionDate} placeholder="End of submission date" />
+                    <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate} placeholder="End of submission date" />
 
                     <div className="field">
                         <div className="ui labeled input">
@@ -65,7 +68,7 @@ Project = React.createClass({
                     </div>
                     <div className="header">Media:</div>
                     {
-                        _.map(this.state.videos, function (video, i) {
+                        _.map(this.state.media, function (video, i) {
                             return this.renderVideo(video, i);
                         }, this)
                     }

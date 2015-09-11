@@ -3,5 +3,6 @@
   "react-video":"1.5.3",
   "react-vimeo":"0.0.3",
   "externalify":"0.1.0",
-  "react-youtube":"4.1.0"
+  "react-youtube":"4.1.0",
+  "moment":"2.10.6"
 }

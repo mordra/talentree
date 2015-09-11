@@ -20,3 +20,5 @@ meteorhacks:npm
 cosmos:browserify
 
 npm-container
+aldeed:simple-schema
+aldeed:collection2

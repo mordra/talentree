@@ -10,6 +10,7 @@ Landing = React.createClass({
             <div className="container">
                 <h1>
                     Welcome to Talentree!
+                    <ProjectList />
                 </h1>
             </div>
         );
