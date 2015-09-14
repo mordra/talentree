@@ -3,7 +3,7 @@ Layout = React.createClass({
         return (
             <div>
                 <TopNav/>
-                <main className="ui container">{this.props.content}</main>
+                <main>{this.props.content}</main>
             </div>
         );
     }

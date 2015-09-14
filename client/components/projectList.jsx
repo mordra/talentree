@@ -25,7 +25,7 @@ ProjectList = React.createClass({
     },
     render() {
         return (
-            <div className="ui one column segment">
+            <div className="ui one column segment container">
                 {_.map(this.data.projects, this.renderProject)}
             </div>
         )

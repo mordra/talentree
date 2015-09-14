@@ -3,14 +3,17 @@ Meteor.methods({
 
         // remove extraneous fields
         project = _.pick(project, _.keys(db.Schemas.Project.schema()));
-
-        console.log("Called submit project: " + JSON.stringify(project));
-        try {
-            check(project, db.Schemas.Project);
-
-            db.Projects.insert(project);
-        } catch (e) {
-            console.log(e);
+        if (project.bounty) {
+            var bounty =  parseInt(project.bounty);
+            if (bounty && _.isNumber(bounty) && !_.isNaN(bounty)) {
+                project.bounty = bounty;
+            } else {
+                console.log("Bounty is not a number: " + project.bounty);
+                throw new Meteor.Error("Bad input", "Bounty is not a number.");
+            }
         }
+
+        check(project, db.Schemas.Project);
+        db.Projects.insert(project);
     }
 });
