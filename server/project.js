@@ -1,5 +1,5 @@
 Meteor.methods({
-    'SubmitProject': function (project) {
+    'NewProject': function (project) {
 
         // remove extraneous fields
         project = _.pick(project, _.keys(db.Schemas.Project.schema()));
@@ -15,5 +15,8 @@ Meteor.methods({
 
         check(project, db.Schemas.Project);
         db.Projects.insert(project);
+    },
+    'NewSubmission': function (projectId, submission) {
+
     }
 });

@@ -1,3 +1,4 @@
+
 EditProject = React.createClass({
     mixins: [React.addons.LinkedStateMixin],
     getInitialState: function () {
@@ -7,7 +8,10 @@ EditProject = React.createClass({
             submissionDate: moment(),
             media: [],
             description: '',
-            collaborators: {}
+            collaborators: {},
+            type: '',
+            category:'',
+            subcategory:''
         }
     },
     changeSubmissionDate (date) {
@@ -16,26 +20,28 @@ EditProject = React.createClass({
     propTypes: {
         id: React.PropTypes.string.isRequired
     },
-    addVideo() {
+    addMedia() {
         console.log('Adding video: ' + this.state.newVideo);
         this.state.media.push(this.state.newVideo);
         this.setState({newVideo: ''});
     },
-    renderVideo(video, key) {
+    renderMedia(video, key) {
         if (video.indexOf("youtube") > -1)
-            return (<Youtube url={video}/>);
-        else {
+            return (<Youtube url={video} opts={{width:'100%'}}/>);
+        else if (video.indexOf('vimeo') > -1) {
             var id = video.match(/\d*$/);
             if (id.length || _.isNumber(id[0]))
                 return (<Vimeo videoId={id}/>);
-            else
-                return null;
+        } else if (video.indexOf('soundcloud') > -1) {
+            return (
+                <SoundCloud url={video}/>
+            )
         }
     },
     submitProject() {
         var project = _.extend({}, this.state);
         project.submissionDate = project.submissionDate.format();
-        Meteor.call('SubmitProject', project, function (err, res) {
+        Meteor.call('NewProject', project, function (err, res) {
             if (err) {
                 console.error(err);
             } else {
@@ -46,43 +52,117 @@ EditProject = React.createClass({
     onDescriptionChange(value) {
         this.setState({description: value})
     },
+    setProjectType(type) {
+        this.setState({type: type})
+    },
+    getTypeClasses(type) {
+        return 'ui large icon button' + (this.state.type == type ? ' active' : '');
+    },
+    renderBounty() {
+        return (
+            <div className="ui labeled fluid input">
+                <div className="ui label">$</div>
+                <input type="text" placeholder="Enter a reasonable bounty"
+                       valueLink={this.linkState('bounty')}/>
+            </div>
+        );
+    },
+    renderProjectTypeMessage() {
+        if (!this.state.type) return;
+
+        return (
+            <div className="ui message">
+                <div className="header">{this.state.type}</div>
+                <p>Some text describing the selected project type.</p>
+            </div>
+        )
+    },
+    renderCategory(category) {
+        var targetCategory = category?tt.Category[category]:tt.Category;
+        return (
+        <select className="ui dropdown" onChange={this.changeCategory.bind(this, category)} value={category?this.state.subcategory:this.state.category}>
+            <option value="">{category?'SubCategory':'Category'}</option>
+            {
+                _.map(_.keys(targetCategory), function (key) {
+                    return (
+                        <option value={key}>{key.replace(/(.)([A-Z])/, '$1 & $2')}</option>
+                    )
+                })
+            }
+        </select>
+        )
+    },
+    changeCategory(category, e) {
+        if (category)
+            this.setState({subcategory: e.target.value});
+        else
+            this.setState({category: e.target.value});
+    },
     render() {
         return (
             <div className="ui container">
 
                 <div className="ui fluid input huge header vertical basic segment">
-                    <input type="text" placeholder="Name your project..." valueLink={this.linkState('name')}/>
+                    <input type="text" placeholder="Title..." valueLink={this.linkState('name')}/>
                 </div>
+
+                <div className="ui two stackable columns grid">
+                    <div className="ten wide column">
+                        <div className="ui header">Project Type</div>
+                        <div className="ui buttons">
+                            <div className={this.getTypeClasses('collaborate')}
+                                 onClick={this.setProjectType.bind(this, 'collaborate')}>
+                                <i className="ui idea icon"></i>Collaborate
+                            </div>
+                            <div className="or"></div>
+                            <div className={this.getTypeClasses('barter')}
+                                 onClick={this.setProjectType.bind(this, 'barter')}>
+                                <i className="ui gift icon"></i>Barter
+                            </div>
+                            <div className="or"></div>
+                            <div className={this.getTypeClasses('bounty')}
+                                 onClick={this.setProjectType.bind(this, 'bounty')}>
+                                <i className="ui dollar icon"></i>Bounty
+                            </div>
+                            {this.state.type == 'bounty' ? this.renderBounty() : ''}
+                        </div>
+                        {this.renderProjectTypeMessage()}
+
+                    </div>
+                    <div className="six wide column">
+                        <div className="ui header">Submission Deadline</div>
+                        <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate}
+                                    placeholder="End of submission date"/>
+                    </div>
+                </div>
+
+                {this.renderCategory()}
+                {this.renderCategory(this.state.category)}
 
                 <div className="ui header">Description</div>
                 <div className="ui segment">
                     <ReactQuill theme="snow" value={this.state.description} onChange={this.onDescriptionChange}/>
                 </div>
 
-                <div className="ui header">Submission</div>
-                <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate}
-                            placeholder="End of submission date"/>
-
-                <div className="ui header">Bounty</div>
-                    <div className="ui labeled input">
-                        <div className="ui label">$</div>
-                        <input type="text" placeholder="Bounty, leave blank to accept offers"
-                               valueLink={this.linkState('bounty')}/>
-                    </div>
-
                 <div className="ui header">Media:</div>
-                {
-                    _.map(this.state.media, function (video, i) {
-                        return this.renderVideo(video, i);
-                    }, this)
-                }
+                <div className="ui cards">
+                    {
+                        _.map(this.state.media, function (video, i) {
+                            return <div className="ui card">
+                                {this.renderMedia(video, i)}
+                            </div>
+                        }, this)
+                    }
+                </div>
                 <div className="ui action input">
                     <input type="text" placeholder="Add a Youtube/Vimeo video by url..."
                            valueLink={this.linkState('newVideo')}/>
-                    <button className="ui icon button" onClick={this.addVideo}><i
+                    <button className="ui icon button" onClick={this.addMedia}><i
                         className="ui icon green plus"></i></button>
                 </div>
-                <button className="ui button primary" onClick={this.submitProject}>Submit Project</button>
+                <div>
+                    <button className="ui button primary" onClick={this.submitProject}>Submit Project</button>
+                </div>
             </div>
         )
     }
