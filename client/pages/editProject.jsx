@@ -106,35 +106,35 @@ EditProject = React.createClass({
                     <input type="text" placeholder="Title..." valueLink={this.linkState('name')}/>
                 </div>
 
-                <div className="ui two stackable columns grid">
-                    <div className="ten wide column">
-                        <div className="ui header">Project Type</div>
-                        <div className="ui buttons">
-                            <div className={this.getTypeClasses('collaborate')}
-                                 onClick={this.setProjectType.bind(this, 'collaborate')}>
-                                <i className="ui idea icon"></i>Collaborate
-                            </div>
-                            <div className="or"></div>
-                            <div className={this.getTypeClasses('barter')}
-                                 onClick={this.setProjectType.bind(this, 'barter')}>
-                                <i className="ui gift icon"></i>Barter
-                            </div>
-                            <div className="or"></div>
-                            <div className={this.getTypeClasses('bounty')}
-                                 onClick={this.setProjectType.bind(this, 'bounty')}>
-                                <i className="ui dollar icon"></i>Bounty
-                            </div>
-                            {this.state.type == 'bounty' ? this.renderBounty() : ''}
-                        </div>
-                        {this.renderProjectTypeMessage()}
-
-                    </div>
-                    <div className="six wide column">
-                        <div className="ui header">Submission Deadline</div>
-                        <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate}
-                                    placeholder="End of submission date"/>
-                    </div>
-                </div>
+                //<div className="ui two stackable columns grid">
+                //    <div className="ten wide column">
+                //        <div className="ui header">Project Type</div>
+                //        <div className="ui buttons">
+                //            <div className={this.getTypeClasses('collaborate')}
+                //                 onClick={this.setProjectType.bind(this, 'collaborate')}>
+                //                <i className="ui idea icon"></i>Collaborate
+                //            </div>
+                //            <div className="or"></div>
+                //            <div className={this.getTypeClasses('barter')}
+                //                 onClick={this.setProjectType.bind(this, 'barter')}>
+                //                <i className="ui gift icon"></i>Barter
+                //            </div>
+                //            <div className="or"></div>
+                //            <div className={this.getTypeClasses('bounty')}
+                //                 onClick={this.setProjectType.bind(this, 'bounty')}>
+                //                <i className="ui dollar icon"></i>Bounty
+                //            </div>
+                //            {this.state.type == 'bounty' ? this.renderBounty() : ''}
+                //        </div>
+                //        {this.renderProjectTypeMessage()}
+                //
+                //    </div>
+                //    <div className="six wide column">
+                //        <div className="ui header">Submission Deadline</div>
+                //        <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate}
+                //                    placeholder="End of submission date"/>
+                //    </div>
+                //</div>
 
                 {this.renderCategory()}
                 {this.renderCategory(this.state.category)}
