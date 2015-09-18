@@ -79,17 +79,22 @@ EditProject = React.createClass({
     },
     renderCategory(category) {
         var targetCategory = category?tt.Category[category]:tt.Category;
+
         return (
-        <select className="ui dropdown" onChange={this.changeCategory.bind(this, category)} value={category?this.state.subcategory:this.state.category}>
-            <option value="">{category?'SubCategory':'Category'}</option>
-            {
-                _.map(_.keys(targetCategory), function (key) {
-                    return (
-                        <option value={key}>{key.replace(/(.)([A-Z])/, '$1 & $2')}</option>
-                    )
-                })
-            }
-        </select>
+            <div className="ui floating dropdown button">
+                <span className="text">Talent</span>
+                <div className="menu">
+                {
+                    _.map(tt.Category, function (val, key) {
+                        var opts = [<div className="divider"></div>,<div className="header">{key}</div>,<div className="divider"></div>];
+                        _.forEach(val, function (val, key) {
+                            opts.push(<div className="item" value={key}>{val}</div>);
+                        });
+                        return opts;
+                    })
+                }
+                </div>
+            </div>
         )
     },
     changeCategory(category, e) {
@@ -106,38 +111,41 @@ EditProject = React.createClass({
                     <input type="text" placeholder="Title..." valueLink={this.linkState('name')}/>
                 </div>
 
-                //<div className="ui two stackable columns grid">
-                //    <div className="ten wide column">
-                //        <div className="ui header">Project Type</div>
-                //        <div className="ui buttons">
-                //            <div className={this.getTypeClasses('collaborate')}
-                //                 onClick={this.setProjectType.bind(this, 'collaborate')}>
-                //                <i className="ui idea icon"></i>Collaborate
-                //            </div>
-                //            <div className="or"></div>
-                //            <div className={this.getTypeClasses('barter')}
-                //                 onClick={this.setProjectType.bind(this, 'barter')}>
-                //                <i className="ui gift icon"></i>Barter
-                //            </div>
-                //            <div className="or"></div>
-                //            <div className={this.getTypeClasses('bounty')}
-                //                 onClick={this.setProjectType.bind(this, 'bounty')}>
-                //                <i className="ui dollar icon"></i>Bounty
-                //            </div>
-                //            {this.state.type == 'bounty' ? this.renderBounty() : ''}
-                //        </div>
-                //        {this.renderProjectTypeMessage()}
-                //
-                //    </div>
-                //    <div className="six wide column">
-                //        <div className="ui header">Submission Deadline</div>
-                //        <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate}
-                //                    placeholder="End of submission date"/>
-                //    </div>
-                //</div>
+                <div className="ui stackable three column grid">
+                    <div className="column">
+                        <div className="ui header">Project Type</div>
+                        <div className="ui three buttons">
+                            <div className={this.getTypeClasses('collaborate')}
+                                 onClick={this.setProjectType.bind(this, 'collaborate')}>
+                                <i className="ui idea icon"></i>Collaborate
+                            </div>
+                            <div className="or"></div>
+                            <div className={this.getTypeClasses('barter')}
+                                 onClick={this.setProjectType.bind(this, 'barter')}>
+                                <i className="ui gift icon"></i>Barter
+                            </div>
+                            <div className="or"></div>
+                            <div className={this.getTypeClasses('bounty')}
+                                 onClick={this.setProjectType.bind(this, 'bounty')}>
+                                <i className="ui dollar icon"></i>Bounty
+                            </div>
+                            {this.state.type == 'bounty' ? this.renderBounty() : ''}
+                        </div>
+                        {this.renderProjectTypeMessage()}
 
-                {this.renderCategory()}
-                {this.renderCategory(this.state.category)}
+                    </div>
+                    <div className="column">
+                        <div className="ui header">Submission Deadline</div>
+                        <DatePicker onChange={this.changeSubmissionDate} selected={this.state.submissionDate}
+                                    placeholder="End of submission date"/>
+                    </div>
+                    <div className="column">
+                        <div className="ui header">Talents</div>
+                        {this.renderCategory()}
+                    </div>
+                </div>
+
+
 
                 <div className="ui header">Description</div>
                 <div className="ui segment">

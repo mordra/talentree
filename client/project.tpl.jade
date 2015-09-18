@@ -1,0 +1,20 @@
+.ui.inverted.vertical.segment
+  .ui.container
+    h1 {{project.name}}
+    +if isParticipate
+      h4 Submission Due {{daysAwayPretty}}
+      a.ui.inverted.primary.button(href='/project/{{project._id}}/submit') Participate
+    +else
+      h4 Submission Past {{daysAwayPretty}}
+    .ui.vertical.segment
+      .ui.inverted.secondary.pointing.menu
+        a.item(href='/project/{{project._id}}/details', class='{{isSubPageActive "details"}}') Details
+        a.item(href='/project/{{project._id}}/submissions', class='{{isSubPageActive "submissions"}}') Submissions
+        a.item(href='/project/{{project._id}}/comments', class='{{isSubPageActive "comments"}}') Comments
+.ui.vertical.segment.container
+  +if isSubPage 'details'
+    h1 Details
+  +if isSubPage 'submissions'
+    h1 Submissions
+  +if isSubPage 'comments'
+    h1 Comments

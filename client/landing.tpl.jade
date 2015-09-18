@@ -1,1 +1,12 @@
-h1 This is the landing
+.ui.one.column.segment.container
+  +each projects
+    a.ui.basic.fluid.button(href='/project/{{this._id}}')
+      .ui.left.aligned.grid
+        .ten.wide.column
+          h1 {{this.name}}
+        .six.wide.right.aligned.column
+          label {{this.projectType}}
+        .sixteen.wide.column
+          grey Dubmission Date: {{prettyDate this.submissionDate}}
+
+

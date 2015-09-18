@@ -1,32 +1,12 @@
 .ui.container
-  .ui.fluid.input.huge.header.vertical.basic.segment
-    input(placeholder="Name your project...")
-
-  .ui.two.stackable.columns.grid
-    .ten.wide.column
-      .ui.header Project Type
-      .ui.buttons
-        .ui.icon.button
-          i.ui.idea.icon
-          | Collaborate
-        .ui.icon.button
-          i.ui.gift.icon
-          | Barter
-        .ui.icon.button
-          i.ui.dollar.icon
-          | Bounty
-      +if bounty
-        .ui.labeled.input
-          .ui.label $
-          input(type="text", placeholder="Bounty")
-    .six.wide.column
-      .ui.header Submission Deadline
-
-  .ui.header Description
-  .ui.segment
-    // quill
-
-  .ui.header Media
-  .ui.icon.button
-    i.ui.icon.green.plus
-  button.ui.button.primary Submit Project
+  +autoForm schema='db.Schemas.Project' type="method" meteormethod="insertProject" id='newProject'
+    +afQuickField name='name'
+    +afQuickField name='submissionDate' value=defaultSubmissionDate
+    +afQuickField name='projectType' options=typeOptions
+    +if afFieldValueIs name='projectType' value='bounty'
+      +afQuickField name='bounty'
+    +afQuickField name='description'
+    +afQuickField name='media'
+    +afQuickField name='creativeCategory'
+    div
+      .ui.button.primary(onclick='{{submitProject}}') Submit Project
