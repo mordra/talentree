@@ -6,6 +6,17 @@ Meteor.publish('projects', function () {
     return db.Projects.find();
 });
 
-Meteor.publish('project', function (id) {
-    return db.Projects.find(id);
+Meteor.publishComposite('project', function (id) {
+    return {
+        find: function () {
+            return db.Projects.find(id);
+        },
+        children: [
+            {
+                find: function (project) {
+                    return db.Submissions.find({_id: {$in: project.submissions}});
+                }
+            }
+        ]
+    }
 });

@@ -2,7 +2,7 @@ Template.submit.onCreated(function () {
     console.log("Goto: Submit");
     var self = this;
     Util.setTemplateState(this, {
-        'submissions':[]
+        'medias':[]
     });
     var id = Router.current().params.id;
     this.subscribe('project', id, function () {
@@ -15,6 +15,16 @@ Template.submit.helpers({
 });
 
 Template.submit.events({
+    uploadImage: function (e, t) {
+        var files = $("input.file_bag")[0].files;
+
+        S3.upload({
+            files:files,
+            path:"subfolder"
+        },function(e,r){
+            console.log(r);
+        });
+    },
     submit: function (e, t) {
         var doc = AutoForm.getFormValues('projectSubmission').insertDoc;
         doc.projectId = t.state('project')._id;

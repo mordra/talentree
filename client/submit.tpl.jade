@@ -1,14 +1,14 @@
 .ui.container
   h1 New Submission
   ui.header Media:
-  +each submissions
-    p {{this}}
   +autoForm id='projectSubmission' schema='db.Schemas.Submission'
     +afQuickField name='description'
     +afQuickField name='media'
 
-  .ui.fluid.action.input
-    input(type="text" placeholder="Add a Youtube/Vimeo video by url...")
-    button.ui.icon.button(onclick='{{addMedia}}')
-      i.ui.icon.green.plus
+  input(type="file", class="file_bag")
+  button.upload(onclick="{{uploadImage}}") Upload
+  //.ui.fluid.action.input
+  //  input(type="text" placeholder="Add a Youtube/Vimeo video by url...")
+  //  button.ui.icon.button(onclick='{{addMedia}}')
+  //    i.ui.icon.green.plus
   .ui.button.primary(onclick="{{submit}}") Submit

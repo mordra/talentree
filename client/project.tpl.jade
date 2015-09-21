@@ -13,8 +13,17 @@
         a.item(href='/project/{{project._id}}/comments', class='{{isSubPageActive "comments"}}') Comments
 .ui.vertical.segment.container
   +if isSubPage 'details'
-    h1 Details
+    +details id=project._id
   +if isSubPage 'submissions'
-    h1 Submissions
+    .ui.cards
+      +each submissions
+        +with prettifySubmission this
+          .ui.card
+            iframe(src="{{embedUrl}}", webkitallowfullscreen, mozallowfullscreen, allowfullscreen, frameborder="0")
+            a.content
+              i.right.floated.like.icon(class="{{isLiked}}" onclick="{{likeSubmission}}")
+              .header Submission Name
+              .meta {{prettyDate createdAt}}
+              .description {{shortDescription}}
   +if isSubPage 'comments'
-    h1 Comments
+    +comments id=project._id
