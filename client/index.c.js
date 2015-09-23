@@ -1,8 +1,8 @@
-Template.landing.onCreated(function () {
+Template.index.onCreated(function () {
     this.subscribe('projects');
 });
 
-Template.landing.helpers({
+Template.index.helpers({
     projects: function () {
         return db.Projects.find();
     }
